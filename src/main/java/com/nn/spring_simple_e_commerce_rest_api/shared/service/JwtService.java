@@ -33,7 +33,7 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public long getExpirationTime(String token) {
+    public long getExpirationTime() {
         return jwtExpirationTime;
     }
 
