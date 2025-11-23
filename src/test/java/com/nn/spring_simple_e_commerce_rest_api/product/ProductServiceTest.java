@@ -10,12 +10,14 @@ import com.nn.spring_simple_e_commerce_rest_api.product.support.ProductMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -70,5 +72,22 @@ public class ProductServiceTest {
 
         // then
         assertThat(actualResponse).isEqualTo(mockResponse);
+    }
+
+    @Test
+    @WithMockUser(username = "bob", authorities = "USER")
+    void createProductShouldNotWorkWithoutAuthorities() {
+        // given
+        ProductRequest productRequest = new ProductRequest(
+                "testName",
+                "testDesc",
+                "testFullDesc",
+                23.21,
+                7,
+                ProductCategory.OTHER,
+                "testProducer"
+        );
+        // then
+        assertThrows(AuthorizationDeniedException.class, () -> productService.create(productRequest));
     }
 }
