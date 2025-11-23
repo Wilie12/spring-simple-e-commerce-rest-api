@@ -8,6 +8,8 @@ import com.nn.spring_simple_e_commerce_rest_api.product.support.ProductMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -22,5 +24,12 @@ public class ProductService {
     public ProductResponse create(ProductRequest productRequest) {
         Product product = productRepository.save(productMapper.toProduct(productRequest));
         return productMapper.toProductResponse(product);
+    }
+
+    public List<ProductResponse> getAll() {
+        return productRepository.findAll()
+                .stream()
+                .map(productMapper::toProductResponse)
+                .toList();
     }
 }

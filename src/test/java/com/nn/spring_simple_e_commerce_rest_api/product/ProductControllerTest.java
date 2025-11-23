@@ -17,6 +17,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,5 +65,13 @@ public class ProductControllerTest {
 
         // then
         verify(productService).create(productRequest);
+    }
+
+    @Test
+    void getAllProductsShouldWork() throws Exception {
+        mvc.perform(get("/api/v1/products"))
+                .andExpect(status().isOk());
+
+        verify(productService).getAll();
     }
 }

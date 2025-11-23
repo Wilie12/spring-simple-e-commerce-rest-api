@@ -16,6 +16,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -89,5 +91,59 @@ public class ProductServiceTest {
         );
         // then
         assertThrows(AuthorizationDeniedException.class, () -> productService.create(productRequest));
+    }
+
+    @Test
+    void getAllShouldReturnAllProducts() {
+        // given
+        Product product1 = new Product(
+                "testName",
+                "testDesc",
+                "testFullDesc",
+                23.21,
+                7,
+                ProductCategory.OTHER,
+                "testProducer"
+        );
+        Product product2 = new Product(
+                "testName2",
+                "testDesc2",
+                "testFullDesc2",
+                73.23,
+                11,
+                ProductCategory.HOME,
+                "testProducer2"
+        );
+        ProductResponse mockResponse1 = new ProductResponse(
+                product1.getName(),
+                product1.getShortDescription(),
+                product1.getFullDescription(),
+                product1.getPrice(),
+                product1.getQuantity(),
+                product1.getCategory(),
+                product1.getProducer(),
+                product1.getCreatedAt(),
+                product1.getUpdatedAt()
+        );
+        ProductResponse mockResponse2 = new ProductResponse(
+                product2.getName(),
+                product2.getShortDescription(),
+                product2.getFullDescription(),
+                product2.getPrice(),
+                product2.getQuantity(),
+                product2.getCategory(),
+                product2.getProducer(),
+                product2.getCreatedAt(),
+                product2.getUpdatedAt()
+        );
+        when(productRepository.findAll()).thenReturn(List.of(product1, product2));
+        when(productMapper.toProductResponse(any())).thenReturn(mockResponse1, mockResponse2);
+
+        // when
+        List<ProductResponse> actualResponse = productService.getAll();
+
+        // then
+        assertThat(actualResponse).hasSize(2);
+        assertThat(actualResponse).isEqualTo(List.of(mockResponse1, mockResponse2));
     }
 }
