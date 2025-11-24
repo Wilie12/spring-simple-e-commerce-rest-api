@@ -74,4 +74,12 @@ public class ProductControllerTest {
 
         verify(productService).getAll();
     }
+
+    @Test
+    void getProductByIdShouldWork() throws Exception {
+        mvc.perform(get("/api/v1/products/{productID}", 1L))
+                .andExpect(status().isOk());
+
+        verify(productService).getById(1L);
+    }
 }
