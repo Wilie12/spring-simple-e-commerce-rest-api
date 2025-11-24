@@ -4,6 +4,7 @@ import com.nn.spring_simple_e_commerce_rest_api.product.api.request.ProductReque
 import com.nn.spring_simple_e_commerce_rest_api.product.api.response.ProductResponse;
 import com.nn.spring_simple_e_commerce_rest_api.product.domain.Product;
 import com.nn.spring_simple_e_commerce_rest_api.product.repository.ProductRepository;
+import com.nn.spring_simple_e_commerce_rest_api.product.support.ProductExceptionSupplier;
 import com.nn.spring_simple_e_commerce_rest_api.product.support.ProductMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,12 @@ public class ProductService {
                 .stream()
                 .map(productMapper::toProductResponse)
                 .toList();
+    }
+
+    public ProductResponse getById(long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(ProductExceptionSupplier.productNotFound(productId));
+
+        return productMapper.toProductResponse(product);
     }
 }

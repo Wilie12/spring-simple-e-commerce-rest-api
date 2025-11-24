@@ -17,6 +17,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -145,5 +146,38 @@ public class ProductServiceTest {
         // then
         assertThat(actualResponse).hasSize(2);
         assertThat(actualResponse).isEqualTo(List.of(mockResponse1, mockResponse2));
+    }
+
+    @Test
+    public void getByIdShouldReturnCorrectProduct() {
+        // given
+        Product product = new Product(
+                "testName",
+                "testDesc",
+                "testFullDesc",
+                23.21,
+                7,
+                ProductCategory.OTHER,
+                "testProducer"
+        );
+        ProductResponse mockResponse = new ProductResponse(
+                product.getName(),
+                product.getShortDescription(),
+                product.getFullDescription(),
+                product.getPrice(),
+                product.getQuantity(),
+                product.getCategory(),
+                product.getProducer(),
+                product.getCreatedAt(),
+                product.getUpdatedAt()
+        );
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
+        when(productMapper.toProductResponse(any())).thenReturn(mockResponse);
+
+        // when
+        ProductResponse actualResponse = productService.getById(1L);
+
+        // then
+        assertThat(actualResponse).isEqualTo(mockResponse);
     }
 }
