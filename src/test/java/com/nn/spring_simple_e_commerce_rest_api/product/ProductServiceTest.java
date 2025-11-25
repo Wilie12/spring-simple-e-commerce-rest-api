@@ -1,6 +1,7 @@
 package com.nn.spring_simple_e_commerce_rest_api.product;
 
 import com.nn.spring_simple_e_commerce_rest_api.product.api.request.ProductRequest;
+import com.nn.spring_simple_e_commerce_rest_api.product.api.request.ProductUpdateRequest;
 import com.nn.spring_simple_e_commerce_rest_api.product.api.response.ProductResponse;
 import com.nn.spring_simple_e_commerce_rest_api.product.domain.Product;
 import com.nn.spring_simple_e_commerce_rest_api.product.domain.ProductCategory;
@@ -179,5 +180,75 @@ public class ProductServiceTest {
 
         // then
         assertThat(actualResponse).isEqualTo(mockResponse);
+    }
+
+    @Test
+    @WithMockUser(username = "alice", authorities = "UPDATE_PRODUCTS")
+    public void updateShouldReturnUpdatedData() {
+        // given
+        Product product = new Product(
+                "testName",
+                "testDesc",
+                "testFullDesc",
+                23.21,
+                7,
+                ProductCategory.OTHER,
+                "testProducer"
+        );
+        ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(
+                "updatedName",
+                "updatedShortDesc",
+                "updatedFullDesc",
+                30.42,
+                10,
+                ProductCategory.HOME,
+                "updatedProducer"
+        );
+        ProductResponse mockResponse = new ProductResponse(
+                productUpdateRequest.name(),
+                productUpdateRequest.shortDescription(),
+                productUpdateRequest.fullDescription(),
+                productUpdateRequest.price(),
+                productUpdateRequest.quantity(),
+                productUpdateRequest.category(),
+                productUpdateRequest.producer(),
+                product.getCreatedAt(),
+                product.getUpdatedAt()
+        );
+        when(productRepository.findById(any())).thenReturn(Optional.of(product));
+        when(productMapper.toProductResponse(any())).thenReturn(mockResponse);
+
+        // when
+        ProductResponse actualResponse = productService.update(1L, productUpdateRequest);
+
+        // then
+        assertThat(actualResponse.name()).isEqualTo(productUpdateRequest.name());
+        assertThat(actualResponse.shortDescription()).isEqualTo(productUpdateRequest.shortDescription());
+        assertThat(actualResponse.fullDescription()).isEqualTo(productUpdateRequest.fullDescription());
+        assertThat(actualResponse.price()).isEqualTo(productUpdateRequest.price());
+        assertThat(actualResponse.quantity()).isEqualTo(productUpdateRequest.quantity());
+        assertThat(actualResponse.category()).isEqualTo(productUpdateRequest.category());
+        assertThat(actualResponse.producer()).isEqualTo(productUpdateRequest.producer());
+        assertThat(actualResponse.createdAt()).isEqualTo(product.getCreatedAt());
+        assertThat(actualResponse.updatedAt()).isEqualTo(product.getUpdatedAt());
+    }
+
+    @Test
+    @WithMockUser(username = "bob", authorities = "USER")
+    public void updateShouldNotWorkWithoutAuthorities() {
+        ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(
+                "updatedName",
+                "updatedShortDesc",
+                "updatedFullDesc",
+                30.42,
+                10,
+                ProductCategory.HOME,
+                "updatedProducer"
+        );
+
+        assertThrows(
+                AuthorizationDeniedException.class,
+                () -> productService.update(1L, productUpdateRequest)
+        );
     }
 }
