@@ -1,6 +1,7 @@
 package com.nn.spring_simple_e_commerce_rest_api.product.controller;
 
 import com.nn.spring_simple_e_commerce_rest_api.product.api.request.ProductRequest;
+import com.nn.spring_simple_e_commerce_rest_api.product.api.request.ProductUpdateRequest;
 import com.nn.spring_simple_e_commerce_rest_api.product.api.response.ProductResponse;
 import com.nn.spring_simple_e_commerce_rest_api.product.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,17 @@ public class ProductController {
     @GetMapping("/{productId}")
     public ResponseEntity<ProductResponse> getById(@PathVariable long productId) {
         ProductResponse product = productService.getById(productId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(product);
+    }
+
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductResponse> update(
+            @PathVariable long productId,
+            @RequestBody ProductUpdateRequest productUpdateRequest
+    ) {
+        ProductResponse product = productService.update(productId, productUpdateRequest);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(product);

@@ -1,6 +1,7 @@
 package com.nn.spring_simple_e_commerce_rest_api.product;
 
 import com.nn.spring_simple_e_commerce_rest_api.product.api.request.ProductRequest;
+import com.nn.spring_simple_e_commerce_rest_api.product.api.request.ProductUpdateRequest;
 import com.nn.spring_simple_e_commerce_rest_api.product.controller.ProductController;
 import com.nn.spring_simple_e_commerce_rest_api.product.domain.ProductCategory;
 import com.nn.spring_simple_e_commerce_rest_api.product.service.ProductService;
@@ -17,8 +18,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ProductController.class)
@@ -77,9 +77,43 @@ public class ProductControllerTest {
 
     @Test
     void getProductByIdShouldWork() throws Exception {
-        mvc.perform(get("/api/v1/products/{productID}", 1L))
+        mvc.perform(get("/api/v1/products/{productId}", 1L))
                 .andExpect(status().isOk());
 
         verify(productService).getById(1L);
+    }
+
+    @Test
+    @WithMockUser(username = "alice", authorities = "UPDATE_PRODUCTS")
+    void updateProductShouldWork() throws Exception {
+        // given
+        ProductUpdateRequest productUpdateRequest = new ProductUpdateRequest(
+                "updatedName",
+                "updatedShortDesc",
+                "updatedFullDesc",
+                30.42,
+                10,
+                ProductCategory.HOME,
+                "updatedProducer"
+        );
+
+        // when
+        mvc.perform(put("/api/v1/products/{productId}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                          "name": "updatedName",
+                          "shortDescription": "updatedShortDesc",
+                          "fullDescription": "updatedFullDesc",
+                          "price": 30.42,
+                          "quantity": 10,
+                          "category": "HOME",
+                          "producer": "updatedProducer"
+                        }
+                        """))
+                .andExpect(status().isOk());
+
+        // then
+        verify(productService).update(1L, productUpdateRequest);
     }
 }
