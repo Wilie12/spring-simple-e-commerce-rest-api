@@ -1,5 +1,6 @@
 package com.nn.spring_simple_e_commerce_rest_api.product;
 
+import com.nn.spring_simple_e_commerce_rest_api.config.TestSecurityConfig;
 import com.nn.spring_simple_e_commerce_rest_api.product.api.request.ProductRequest;
 import com.nn.spring_simple_e_commerce_rest_api.product.api.request.ProductUpdateRequest;
 import com.nn.spring_simple_e_commerce_rest_api.product.api.response.ProductResponse;
@@ -26,7 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestSecurityConfig.class})
+@ContextConfiguration(classes = {TestSecurityConfig.class, ProductTestConfig.class})
 public class ProductServiceTest {
     @MockitoBean
     private ProductRepository productRepository;
