@@ -1,6 +1,6 @@
 package com.nn.spring_simple_e_commerce_rest_api.cart;
 
-import com.nn.spring_simple_e_commerce_rest_api.TestcontainersConfiguration;
+import com.nn.spring_simple_e_commerce_rest_api.config.TestcontainersConfiguration;
 import com.nn.spring_simple_e_commerce_rest_api.cart.domain.Cart;
 import com.nn.spring_simple_e_commerce_rest_api.cart.repository.CartRepository;
 import org.junit.jupiter.api.BeforeEach;
