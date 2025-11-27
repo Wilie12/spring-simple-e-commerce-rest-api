@@ -1,4 +1,4 @@
-package com.nn.spring_simple_e_commerce_rest_api;
+package com.nn.spring_simple_e_commerce_rest_api.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;

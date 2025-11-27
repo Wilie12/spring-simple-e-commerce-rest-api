@@ -1,6 +1,6 @@
 package com.nn.spring_simple_e_commerce_rest_api.user;
 
-import com.nn.spring_simple_e_commerce_rest_api.TestcontainersConfiguration;
+import com.nn.spring_simple_e_commerce_rest_api.config.TestcontainersConfiguration;
 import com.nn.spring_simple_e_commerce_rest_api.user.domain.User;
 import com.nn.spring_simple_e_commerce_rest_api.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
