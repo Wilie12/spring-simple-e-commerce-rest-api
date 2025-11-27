@@ -4,7 +4,7 @@ import com.nn.spring_simple_e_commerce_rest_api.cart.api.response.CartResponse;
 import com.nn.spring_simple_e_commerce_rest_api.cart.domain.Cart;
 import com.nn.spring_simple_e_commerce_rest_api.cart.repository.CartRepository;
 import com.nn.spring_simple_e_commerce_rest_api.cart.support.CartMapper;
-import com.nn.spring_simple_e_commerce_rest_api.user.domain.User;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,14 +19,15 @@ public class CartService {
         this.cartMapper = cartMapper;
     }
 
-    public CartResponse createCart(User user) {
-        Optional<Cart> cart = cartRepository.findByUsername(user.getUsername());
+    @PreAuthorize("#username == authentication.name")
+    public CartResponse createCart(String username) {
+        Optional<Cart> cart = cartRepository.findByUsername(username);
 
         if (cart.isPresent()) {
-            return cartMapper.toCartResponse(user.getUsername(), cart.get());
+            return cartMapper.toCartResponse(username, cart.get());
         }
 
-        Cart newCart = cartRepository.save(new Cart(user.getUsername()));
-        return cartMapper.toCartResponse(user.getUsername(), newCart);
+        Cart newCart = cartRepository.save(new Cart(username));
+        return cartMapper.toCartResponse(username, newCart);
     }
 }
