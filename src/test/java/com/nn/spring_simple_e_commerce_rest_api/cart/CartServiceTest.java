@@ -6,7 +6,6 @@ import com.nn.spring_simple_e_commerce_rest_api.cart.domain.Cart;
 import com.nn.spring_simple_e_commerce_rest_api.cart.repository.CartRepository;
 import com.nn.spring_simple_e_commerce_rest_api.cart.service.CartService;
 import com.nn.spring_simple_e_commerce_rest_api.cart.support.CartMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +52,27 @@ public class CartServiceTest {
     @WithMockUser(username = "bob", authorities = "USER")
     void createCartShouldNotWorkForUnauthorizedUser() {
         assertThrows(AuthorizationDeniedException.class, () -> cartService.createCart("alice"));
+    }
+
+    @Test
+    @WithMockUser(username = "alice", authorities = "USER")
+    void getCartShouldReturnCartForUser() {
+        // given
+        Cart mockCart = new Cart("alice");
+        CartResponse mockResponse = new CartResponse("alice", mockCart.getProducts());
+        when(cartRepository.findByUsername(any())).thenReturn(Optional.of(mockCart));
+        when(cartMapper.toCartResponse(any(String.class), any(Cart.class))).thenReturn(mockResponse);
+
+        // when
+        CartResponse actualResponse = cartService.getCart("alice");
+
+        // then
+        assertThat(actualResponse).isEqualTo(mockResponse);
+    }
+
+    @Test
+    @WithMockUser(username = "bob", authorities = "USER")
+    void getCartShouldNotWorkForUnauthorizedUser() {
+        assertThrows(AuthorizationDeniedException.class, () -> cartService.getCart("alice"));
     }
 }
