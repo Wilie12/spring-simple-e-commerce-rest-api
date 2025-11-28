@@ -14,6 +14,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,5 +37,14 @@ public class CartControllerTest {
                 .andExpect(status().isCreated());
 
         verify(cartService).createCart("alice");
+    }
+
+    @Test
+    @WithMockUser(username = "alice", authorities = "USER")
+    void getCartShouldWork() throws Exception {
+        mvc.perform(get("/api/v1/carts"))
+                .andExpect(status().isOk());
+
+        verify(cartService).getCart("alice");
     }
 }
