@@ -1,6 +1,5 @@
 package com.nn.spring_simple_e_commerce_rest_api.cart.domain;
 
-import com.nn.spring_simple_e_commerce_rest_api.product.domain.Product;
 import jakarta.persistence.*;
 
 import java.util.HashMap;
@@ -13,7 +12,7 @@ public class Cart {
     private int id;
     private String username;
     @ElementCollection
-    private Map<Product, Integer> products = new HashMap<>();
+    private Map<Long, Integer> products = new HashMap<>();
 
     protected Cart() {}
 
@@ -33,11 +32,11 @@ public class Cart {
         return username;
     }
 
-    public Map<Product, Integer> getProducts() {
+    public Map<Long, Integer> getProducts() {
         return products;
     }
 
-    public void addProduct(Product product, int quantity) {
-        products.put(product, quantity);
+    public void addProduct(Long productId, int quantity) {
+        products.put(productId, quantity);
     }
 }
