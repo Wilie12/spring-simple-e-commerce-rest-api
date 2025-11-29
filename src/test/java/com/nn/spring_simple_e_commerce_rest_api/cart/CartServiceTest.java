@@ -39,7 +39,7 @@ public class CartServiceTest {
         Cart mockCart = new Cart("alice");
         CartResponse mockResponse = new CartResponse("alice", mockCart.getProducts());
         when(cartRepository.findByUsername(any())).thenReturn(Optional.of(mockCart));
-        when(cartMapper.toCartResponse(any(String.class), any(Cart.class))).thenReturn(mockResponse);
+        when(cartMapper.toCartResponse(any(Cart.class))).thenReturn(mockResponse);
 
         // when
         CartResponse actualResponse = cartService.createCart("alice");
@@ -61,7 +61,7 @@ public class CartServiceTest {
         Cart mockCart = new Cart("alice");
         CartResponse mockResponse = new CartResponse("alice", mockCart.getProducts());
         when(cartRepository.findByUsername(any())).thenReturn(Optional.of(mockCart));
-        when(cartMapper.toCartResponse(any(String.class), any(Cart.class))).thenReturn(mockResponse);
+        when(cartMapper.toCartResponse(any(Cart.class))).thenReturn(mockResponse);
 
         // when
         CartResponse actualResponse = cartService.getCart("alice");
@@ -74,5 +74,32 @@ public class CartServiceTest {
     @WithMockUser(username = "bob", authorities = "USER")
     void getCartShouldNotWorkForUnauthorizedUser() {
         assertThrows(AuthorizationDeniedException.class, () -> cartService.getCart("alice"));
+    }
+
+    @Test
+    @WithMockUser(username = "alice", authorities = "USER")
+    void addProductToCartShouldReturnUpdatedCart() {
+        // given
+        Cart mockCart = new Cart("alice");
+        mockCart.addProduct(1L, 1);
+        CartResponse mockResponse = new CartResponse("alice", mockCart.getProducts());
+
+        when(cartRepository.findByUsername(any())).thenReturn(Optional.of(mockCart));
+        when(cartMapper.toCartResponse(any())).thenReturn(mockResponse);
+
+        // when
+        CartResponse actualResponse = cartService.addProductToCart("alice", 1L, 1);
+
+        // then
+        assertThat(actualResponse).isEqualTo(mockResponse);
+    }
+
+    @Test
+    @WithMockUser(username = "bob", authorities = "USER")
+    void addProductToCartShouldNotWorkForUnauthorizedUser() {
+        assertThrows(
+                AuthorizationDeniedException.class,
+                () -> cartService.addProductToCart("alice", 1L, 1)
+        );
     }
 }
