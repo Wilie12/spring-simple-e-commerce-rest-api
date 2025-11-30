@@ -25,11 +25,11 @@ public class CartService {
         Optional<Cart> cart = cartRepository.findByUsername(username);
 
         if (cart.isPresent()) {
-            return cartMapper.toCartResponse(username, cart.get());
+            return cartMapper.toCartResponse(cart.get());
         }
 
         Cart newCart = cartRepository.save(new Cart(username));
-        return cartMapper.toCartResponse(username, newCart);
+        return cartMapper.toCartResponse(newCart);
     }
 
     @PreAuthorize("#username == authentication.name")
@@ -37,6 +37,16 @@ public class CartService {
         Cart cart = cartRepository.findByUsername(username)
                 .orElseThrow(CartExceptionSupplier.cartNotFound(username));
 
-        return cartMapper.toCartResponse(username, cart);
+        return cartMapper.toCartResponse(cart);
+    }
+
+    @PreAuthorize("#username == authentication.name")
+    public CartResponse addProductToCart(String username, long productId, int quantity) {
+        Cart cart = cartRepository.findByUsername(username)
+                .orElseThrow(CartExceptionSupplier.cartNotFound(username));
+
+        cart.addProduct(productId, quantity);
+        cartRepository.save(cart);
+        return cartMapper.toCartResponse(cart);
     }
 }

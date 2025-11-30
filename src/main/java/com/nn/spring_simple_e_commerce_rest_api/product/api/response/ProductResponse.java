@@ -5,6 +5,7 @@ import com.nn.spring_simple_e_commerce_rest_api.product.domain.ProductCategory;
 import java.time.Instant;
 
 public record ProductResponse(
+        long id,
         String name,
         String shortDescription,
         String fullDescription,

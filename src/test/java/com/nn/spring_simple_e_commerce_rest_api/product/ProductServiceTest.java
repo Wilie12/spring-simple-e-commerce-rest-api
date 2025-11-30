@@ -59,6 +59,7 @@ public class ProductServiceTest {
                 product.getProducer()
         );
         ProductResponse mockResponse = new ProductResponse(
+                product.getId(),
                 product.getName(),
                 product.getShortDescription(),
                 product.getFullDescription(),
@@ -118,6 +119,7 @@ public class ProductServiceTest {
                 "testProducer2"
         );
         ProductResponse mockResponse1 = new ProductResponse(
+                product1.getId(),
                 product1.getName(),
                 product1.getShortDescription(),
                 product1.getFullDescription(),
@@ -129,6 +131,7 @@ public class ProductServiceTest {
                 product1.getUpdatedAt()
         );
         ProductResponse mockResponse2 = new ProductResponse(
+                product2.getId(),
                 product2.getName(),
                 product2.getShortDescription(),
                 product2.getFullDescription(),
@@ -163,6 +166,7 @@ public class ProductServiceTest {
                 "testProducer"
         );
         ProductResponse mockResponse = new ProductResponse(
+                product.getId(),
                 product.getName(),
                 product.getShortDescription(),
                 product.getFullDescription(),
@@ -206,6 +210,7 @@ public class ProductServiceTest {
                 "updatedProducer"
         );
         ProductResponse mockResponse = new ProductResponse(
+                product.getId(),
                 productUpdateRequest.name(),
                 productUpdateRequest.shortDescription(),
                 productUpdateRequest.fullDescription(),
