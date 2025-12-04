@@ -39,4 +39,8 @@ public class Cart {
     public void addProduct(Long productId, int quantity) {
         products.put(productId, quantity);
     }
+
+    public void clearProducts() {
+        products.clear();
+    }
 }
