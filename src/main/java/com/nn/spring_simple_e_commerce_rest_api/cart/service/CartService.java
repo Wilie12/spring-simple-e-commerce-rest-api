@@ -49,4 +49,14 @@ public class CartService {
         cartRepository.save(cart);
         return cartMapper.toCartResponse(cart);
     }
+
+    @PreAuthorize("#username == authentication.name")
+    public CartResponse clearCart(String username) {
+        Cart cart = cartRepository.findByUsername(username)
+                .orElseThrow(CartExceptionSupplier.cartNotFound(username));
+
+        cart.clearProducts();
+        cartRepository.save(cart);
+        return cartMapper.toCartResponse(cart);
+    }
 }

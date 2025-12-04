@@ -128,4 +128,28 @@ public class CartServiceTest {
                 () -> cartService.addProductToCart("alice", 1L, 1)
         );
     }
+
+    @Test
+    @WithMockUser(username = "alice", authorities = "USER")
+    void clearCartShouldReturnEmptyCart() {
+        // given
+        Cart mockCart = new Cart("alice");
+        mockCart.addProduct(1L, 1);
+        CartResponse mockResponse = new CartResponse("alice", Collections.emptyMap());
+
+        when(cartRepository.findByUsername(any())).thenReturn(Optional.of(mockCart));
+        when(cartMapper.toCartResponse(any())).thenReturn(mockResponse);
+
+        // when
+        CartResponse actualResponse = cartService.clearCart("alice");
+
+        // then
+        assertThat(actualResponse.products()).isEmpty();
+    }
+
+    @Test
+    @WithMockUser(username = "bob", authorities = "USER")
+    void clearCartShouldNotWorkForUnauthorizedUser() {
+        assertThrows(AuthorizationDeniedException.class, () -> cartService.clearCart("alice"));
+    }
 }
