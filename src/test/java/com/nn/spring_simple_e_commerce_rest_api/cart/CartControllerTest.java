@@ -20,8 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CartController.class)
@@ -91,5 +90,14 @@ public class CartControllerTest {
         // then
         verify(productService).getById(product.getId());
         verify(cartService).addProductToCart("alice", product.getId(), 7);
+    }
+
+    @Test
+    @WithMockUser(username = "alice", authorities = "USER")
+    void clearCartShouldWork() throws Exception {
+        mvc.perform(delete("/api/v1/carts"))
+                .andExpect(status().isOk());
+
+        verify(cartService).clearCart("alice");
     }
 }

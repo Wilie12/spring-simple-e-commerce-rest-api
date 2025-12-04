@@ -48,4 +48,12 @@ public class CartController {
                 .status(HttpStatus.OK)
                 .body(cart);
     }
+
+    @DeleteMapping
+    public ResponseEntity<CartResponse> clear(Authentication authentication) {
+        CartResponse cart = cartService.clearCart(authentication.getName());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cart);
+    }
 }
