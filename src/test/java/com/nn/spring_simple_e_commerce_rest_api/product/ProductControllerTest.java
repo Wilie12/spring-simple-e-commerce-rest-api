@@ -41,7 +41,7 @@ public class ProductControllerTest {
                 "testName",
                 "testDesc",
                 "testFullDesc",
-                23.21,
+                2321,
                 7,
                 ProductCategory.OTHER,
                 "testProducer"
@@ -55,7 +55,7 @@ public class ProductControllerTest {
                           "name": "testName",
                           "shortDescription": "testDesc",
                           "fullDescription": "testFullDesc",
-                          "price": 23.21,
+                          "price": 2321,
                           "quantity": 7,
                           "category": "OTHER",
                           "producer": "testProducer"
@@ -91,7 +91,7 @@ public class ProductControllerTest {
                 "updatedName",
                 "updatedShortDesc",
                 "updatedFullDesc",
-                30.42,
+                3042,
                 10,
                 ProductCategory.HOME,
                 "updatedProducer"
@@ -105,7 +105,7 @@ public class ProductControllerTest {
                           "name": "updatedName",
                           "shortDescription": "updatedShortDesc",
                           "fullDescription": "updatedFullDesc",
-                          "price": 30.42,
+                          "price": 3042,
                           "quantity": 10,
                           "category": "HOME",
                           "producer": "updatedProducer"

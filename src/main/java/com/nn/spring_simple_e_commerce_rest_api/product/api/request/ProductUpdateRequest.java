@@ -6,7 +6,7 @@ public record ProductUpdateRequest(
         String name,
         String shortDescription,
         String fullDescription,
-        double price,
+        long price,
         int quantity,
         ProductCategory category,
         String producer
