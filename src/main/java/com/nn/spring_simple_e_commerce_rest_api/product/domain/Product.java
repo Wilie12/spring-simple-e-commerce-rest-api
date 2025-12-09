@@ -16,7 +16,7 @@ public class Product {
     String name;
     String shortDescription;
     String fullDescription;
-    double price;
+    long price;
     int quantity;
     ProductCategory category;
     String producer;
@@ -31,7 +31,7 @@ public class Product {
             String name,
             String shortDescription,
             String fullDescription,
-            double price,
+            long price,
             int quantity,
             ProductCategory category,
             String producer
@@ -77,11 +77,11 @@ public class Product {
         this.fullDescription = fullDescription;
     }
 
-    public double getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 

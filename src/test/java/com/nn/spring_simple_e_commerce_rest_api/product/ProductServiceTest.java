@@ -44,7 +44,7 @@ public class ProductServiceTest {
                 "testName",
                 "testDesc",
                 "testFullDesc",
-                23.21,
+                2321,
                 7,
                 ProductCategory.OTHER,
                 "testProducer"
@@ -88,7 +88,7 @@ public class ProductServiceTest {
                 "testName",
                 "testDesc",
                 "testFullDesc",
-                23.21,
+                2321,
                 7,
                 ProductCategory.OTHER,
                 "testProducer"
@@ -104,7 +104,7 @@ public class ProductServiceTest {
                 "testName",
                 "testDesc",
                 "testFullDesc",
-                23.21,
+                2321,
                 7,
                 ProductCategory.OTHER,
                 "testProducer"
@@ -113,7 +113,7 @@ public class ProductServiceTest {
                 "testName2",
                 "testDesc2",
                 "testFullDesc2",
-                73.23,
+                7323,
                 11,
                 ProductCategory.HOME,
                 "testProducer2"
@@ -160,7 +160,7 @@ public class ProductServiceTest {
                 "testName",
                 "testDesc",
                 "testFullDesc",
-                23.21,
+                2321,
                 7,
                 ProductCategory.OTHER,
                 "testProducer"
@@ -195,7 +195,7 @@ public class ProductServiceTest {
                 "testName",
                 "testDesc",
                 "testFullDesc",
-                23.21,
+                2321,
                 7,
                 ProductCategory.OTHER,
                 "testProducer"
@@ -204,7 +204,7 @@ public class ProductServiceTest {
                 "updatedName",
                 "updatedShortDesc",
                 "updatedFullDesc",
-                30.42,
+                3042,
                 10,
                 ProductCategory.HOME,
                 "updatedProducer"
@@ -246,7 +246,7 @@ public class ProductServiceTest {
                 "updatedName",
                 "updatedShortDesc",
                 "updatedFullDesc",
-                30.42,
+                3042,
                 10,
                 ProductCategory.HOME,
                 "updatedProducer"

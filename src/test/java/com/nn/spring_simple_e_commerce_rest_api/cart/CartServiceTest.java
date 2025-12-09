@@ -91,7 +91,7 @@ public class CartServiceTest {
                 "testName",
                 "testDesc",
                 "testFullDesc",
-                23.21,
+                2321,
                 7,
                 ProductCategory.OTHER,
                 "testProducer"
