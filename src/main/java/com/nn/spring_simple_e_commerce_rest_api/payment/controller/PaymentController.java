@@ -35,6 +35,7 @@ public class PaymentController {
         );
 
         PaymentResponse paymentResponse = paymentService.checkout(paymentRequest);
+        cartService.clearCart(authentication.getName());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(paymentResponse);

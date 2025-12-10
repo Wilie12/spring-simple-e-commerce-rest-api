@@ -58,6 +58,7 @@ public class PaymentControllerTest {
 
         verify(cartService).getCart(any());
         verify(paymentService).checkout(mockPaymentRequest);
+        verify(cartService).clearCart(any());
     }
 
 }
