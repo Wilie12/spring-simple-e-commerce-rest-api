@@ -6,26 +6,19 @@ import com.nn.spring_simple_e_commerce_rest_api.cart.support.CartMapper;
 import com.nn.spring_simple_e_commerce_rest_api.product.api.response.ProductResponse;
 import com.nn.spring_simple_e_commerce_rest_api.product.domain.Product;
 import com.nn.spring_simple_e_commerce_rest_api.product.domain.ProductCategory;
-import com.nn.spring_simple_e_commerce_rest_api.product.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
 public class CartMapperTest {
-    @MockitoBean
-    ProductService productService;
     CartMapper cartMapper;
 
     @BeforeEach
-    public void setUp() {
-        cartMapper = new CartMapper(productService);
+    public void setup() {
+        cartMapper = new CartMapper();
     }
 
     @Test
@@ -53,12 +46,10 @@ public class CartMapperTest {
                 product.getUpdatedAt()
         );
         Cart mockCart = new Cart("alice");
-        mockCart.addProduct(1L, 1);
-
-        when(productService.getById(any(Long.class))).thenReturn(mockProductResponse);
+        mockCart.addProduct(product.getId(), 1);
 
         // when
-        CartResponse actualResponse = cartMapper.toCartResponse(mockCart);
+        CartResponse actualResponse = cartMapper.toCartResponse(mockCart, List.of(mockProductResponse));
 
         // then
         assertThat(actualResponse.products().keySet()).contains(mockProductResponse);
