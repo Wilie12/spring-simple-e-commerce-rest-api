@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -185,6 +186,62 @@ public class ProductServiceTest {
 
         // then
         assertThat(actualResponse).isEqualTo(mockResponse);
+    }
+
+    @Test
+    public void getByIdsShouldReturnCorrectProducts() {
+        // given
+        Product product1 = new Product(
+                "testName",
+                "testDesc",
+                "testFullDesc",
+                2321,
+                7,
+                ProductCategory.OTHER,
+                "testProducer"
+        );
+        Product product2 = new Product(
+                "testName2",
+                "testDesc2",
+                "testFullDesc2",
+                7323,
+                11,
+                ProductCategory.HOME,
+                "testProducer2"
+        );
+        ProductResponse mockResponse1 = new ProductResponse(
+                product1.getId(),
+                product1.getName(),
+                product1.getShortDescription(),
+                product1.getFullDescription(),
+                product1.getPrice(),
+                product1.getQuantity(),
+                product1.getCategory(),
+                product1.getProducer(),
+                product1.getCreatedAt(),
+                product1.getUpdatedAt()
+        );
+        ProductResponse mockResponse2 = new ProductResponse(
+                product2.getId(),
+                product2.getName(),
+                product2.getShortDescription(),
+                product2.getFullDescription(),
+                product2.getPrice(),
+                product2.getQuantity(),
+                product2.getCategory(),
+                product2.getProducer(),
+                product2.getCreatedAt(),
+                product2.getUpdatedAt()
+        );
+
+        when(productRepository.findAllById(any())).thenReturn(List.of(product1, product2));
+        when(productMapper.toProductResponse(any())).thenReturn(mockResponse1,  mockResponse2);
+
+        // when
+        List<ProductResponse> actualResponse = productService.getByIds(Set.of(1L, 2L));
+
+        // then
+        assertThat(actualResponse).hasSize(2);
     }
 
     @Test

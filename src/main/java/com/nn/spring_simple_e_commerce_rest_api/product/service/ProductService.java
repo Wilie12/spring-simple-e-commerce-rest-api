@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProductService {
@@ -40,6 +41,13 @@ public class ProductService {
                 .orElseThrow(ProductExceptionSupplier.productNotFound(productId));
 
         return productMapper.toProductResponse(product);
+    }
+
+    public List<ProductResponse> getByIds(Set<Long> productIds) {
+        return productRepository.findAllById(productIds)
+                .stream()
+                .map(productMapper::toProductResponse)
+                .toList();
     }
 
     @PreAuthorize("hasAuthority('UPDATE_PRODUCTS')")
