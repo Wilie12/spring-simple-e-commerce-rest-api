@@ -9,6 +9,7 @@ import com.nn.spring_simple_e_commerce_rest_api.cart.support.CartMapper;
 import com.nn.spring_simple_e_commerce_rest_api.product.api.response.ProductResponse;
 import com.nn.spring_simple_e_commerce_rest_api.product.domain.Product;
 import com.nn.spring_simple_e_commerce_rest_api.product.domain.ProductCategory;
+import com.nn.spring_simple_e_commerce_rest_api.product.service.ProductService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class CartServiceTest {
     private CartRepository cartRepository;
     @MockitoBean
     private CartMapper cartMapper;
+    @MockitoBean
+    private ProductService productService;
     @Autowired
     private CartService cartService;
 
@@ -44,7 +47,7 @@ public class CartServiceTest {
         Cart mockCart = new Cart("alice");
         CartResponse mockResponse = new CartResponse("alice", Collections.emptyMap());
         when(cartRepository.findByUsername(any())).thenReturn(Optional.of(mockCart));
-        when(cartMapper.toCartResponse(any(Cart.class))).thenReturn(mockResponse);
+        when(cartMapper.toCartResponse(any(Cart.class), any())).thenReturn(mockResponse);
 
         // when
         CartResponse actualResponse = cartService.createCart("alice");
@@ -66,7 +69,7 @@ public class CartServiceTest {
         Cart mockCart = new Cart("alice");
         CartResponse mockResponse = new CartResponse("alice", Collections.emptyMap());
         when(cartRepository.findByUsername(any())).thenReturn(Optional.of(mockCart));
-        when(cartMapper.toCartResponse(any(Cart.class))).thenReturn(mockResponse);
+        when(cartMapper.toCartResponse(any(Cart.class), any())).thenReturn(mockResponse);
 
         // when
         CartResponse actualResponse = cartService.getCart("alice");
@@ -111,7 +114,7 @@ public class CartServiceTest {
         CartResponse mockCartResponse = new CartResponse("alice", Map.of(mockProductResponse, 1));
 
         when(cartRepository.findByUsername(any())).thenReturn(Optional.of(mockCart));
-        when(cartMapper.toCartResponse(any())).thenReturn(mockCartResponse);
+        when(cartMapper.toCartResponse(any(Cart.class), any())).thenReturn(mockCartResponse);
 
         // when
         CartResponse actualResponse = cartService.addProductToCart("alice", 1L, 1);
@@ -138,7 +141,7 @@ public class CartServiceTest {
         CartResponse mockResponse = new CartResponse("alice", Collections.emptyMap());
 
         when(cartRepository.findByUsername(any())).thenReturn(Optional.of(mockCart));
-        when(cartMapper.toCartResponse(any())).thenReturn(mockResponse);
+        when(cartMapper.toCartResponse(any(Cart.class), any())).thenReturn(mockResponse);
 
         // when
         CartResponse actualResponse = cartService.clearCart("alice");
