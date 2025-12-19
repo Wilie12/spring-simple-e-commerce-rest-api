@@ -2,27 +2,24 @@ package com.nn.spring_simple_e_commerce_rest_api.cart.support;
 
 import com.nn.spring_simple_e_commerce_rest_api.cart.api.response.CartResponse;
 import com.nn.spring_simple_e_commerce_rest_api.cart.domain.Cart;
-import com.nn.spring_simple_e_commerce_rest_api.product.service.ProductService;
+import com.nn.spring_simple_e_commerce_rest_api.product.api.response.ProductResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
 public class CartMapper {
 
-    ProductService productService;
+    public CartResponse toCartResponse(Cart cart, List<ProductResponse> products) {
+        Map<ProductResponse, Integer> productsWithQuantities = products
+                .stream()
+                .collect(Collectors.toMap(
+                        productResponse -> productResponse,
+                        productResponse -> cart.getProducts().get(productResponse.id())
+                ));
 
-    public CartMapper(ProductService productService) {
-        this.productService = productService;
-    }
-
-    public CartResponse toCartResponse(Cart cart) {
-        return new CartResponse(
-                cart.getUsername(),
-                cart.getProducts()
-                        .keySet()
-                        .stream()
-                        .collect(Collectors.toMap(productService::getById, Long::intValue))
-        );
+        return new CartResponse(cart.getUsername(), productsWithQuantities);
     }
 }
